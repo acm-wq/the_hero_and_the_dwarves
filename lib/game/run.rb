@@ -2,6 +2,7 @@
 
 require 'gosu'
 require_relative '../player/player'
+require_relative '../enemy/forest/gnome/gnome' 
 require_relative 'base_entity'
 
 module Game
@@ -74,15 +75,18 @@ module Game
       super
       @font = Gosu::Font.new(50)
       @player = Player.new
-      @font = Gosu::Font.new(50)
+      @gnome = Gnome.new(100, 100) 
+      @gnome.set_target(@player) # ...
     end
 
     def update
       @player.update
+      @gnome.update  
     end
 
     def draw
       @player.draw
+      @gnome.draw    
     end
   end
 

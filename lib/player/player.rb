@@ -6,23 +6,23 @@ module Game
     def initialize
       super(100, 100, 5, 100)
       @font = Gosu::Font.new(30)
-    
+
       @idle_sprites = [
-        Gosu::Image.new("lib/player/sprite/player_idle_0.png"),
-        Gosu::Image.new("lib/player/sprite/player_idle_1.png"),
-        Gosu::Image.new("lib/player/sprite/player_idle_2.png"),
-        Gosu::Image.new("lib/player/sprite/player_idle_3.png")
+        Gosu::Image.new('lib/player/sprite/player_idle_0.png'),
+        Gosu::Image.new('lib/player/sprite/player_idle_1.png'),
+        Gosu::Image.new('lib/player/sprite/player_idle_2.png'),
+        Gosu::Image.new('lib/player/sprite/player_idle_3.png')
       ]
-    
+
       @run_sprites = [
-        Gosu::Image.new("lib/player/sprite/player_run_0.png"),
-        Gosu::Image.new("lib/player/sprite/player_run_1.png")
+        Gosu::Image.new('lib/player/sprite/player_run_0.png'),
+        Gosu::Image.new('lib/player/sprite/player_run_1.png')
       ]
-    
+
       @current_frame = 0
       @idle_animation = true
       @run_animation = false
-    
+
       @frame_count = 0
       @frame_delay = 10
     end
@@ -48,18 +48,10 @@ module Game
       dy = 0
 
       # Обрабатываем ввод WASD
-      if Gosu.button_down?(Gosu::KbW)
-        dy -= 1
-      end
-      if Gosu.button_down?(Gosu::KbS)
-        dy += 1
-      end
-      if Gosu.button_down?(Gosu::KbA)
-        dx -= 1
-      end
-      if Gosu.button_down?(Gosu::KbD)
-        dx += 1
-      end
+      dy -= 1 if Gosu.button_down?(Gosu::KbW) or Gosu.button_down?(Gosu::KbUp)
+      dy += 1 if Gosu.button_down?(Gosu::KbS) or Gosu.button_down?(Gosu::KbDown)
+      dx -= 1 if Gosu.button_down?(Gosu::KbA) or Gosu.button_down?(Gosu::KbLeft)
+      dx += 1 if Gosu.button_down?(Gosu::KbD) or Gosu.button_down?(Gosu::KbRight)
 
       # Определяем, движется ли игрок
       @is_moving = dx != 0 || dy != 0
@@ -70,7 +62,7 @@ module Game
 
     def animate
       @frame_delay = 10 # Adjust this value to control animation speed
-    
+
       if @frame_count % @frame_delay == 0
         @current_frame += 1
         if @idle_animation
@@ -79,7 +71,7 @@ module Game
           @current_frame %= @run_sprites.size
         end
       end
-    
+
       @frame_count += 1
     end
   end
