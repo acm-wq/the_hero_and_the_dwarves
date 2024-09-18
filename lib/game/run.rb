@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'gosu'
 require_relative '../player/player'
-require_relative 'base_entity'  
+require_relative 'base_entity'
 
 module Game
   # Base options Game
@@ -9,7 +11,7 @@ module Game
     HEIGHT = 720
 
     def initialize
-      super WIDTH, HEIGHT      
+      super WIDTH, HEIGHT
       self.caption = 'More dungeons please'
     end
   end
@@ -70,17 +72,17 @@ module Game
   class Run < BaseWindow
     def initialize
       super
-      @font = Gosu::Font.new(50) 
-      @player = Player.new   
+      @font = Gosu::Font.new(50)
+      @player = Player.new
       @font = Gosu::Font.new(50)
     end
 
     def update
-      @player.update  
+      @player.update
     end
 
     def draw
-      @player.draw 
+      @player.draw
     end
   end
 

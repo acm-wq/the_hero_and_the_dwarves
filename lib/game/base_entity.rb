@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Game
   class BaseEntity
     attr_accessor :x, :y, :speed, :health
