@@ -1,3 +1,6 @@
+# It's the player's code It includes all the basic functions: moving...
+#
+
 require 'gosu'
 require_relative '../game/base_entity'
 
@@ -43,25 +46,25 @@ module Game
     private
 
     def handle_input
-      # Сбрасываем дельты движения
+      # ...
       dx = 0
       dy = 0
 
-      # Обрабатываем ввод WASD
+      # WASD
       dy -= 1 if Gosu.button_down?(Gosu::KbW) or Gosu.button_down?(Gosu::KbUp)
       dy += 1 if Gosu.button_down?(Gosu::KbS) or Gosu.button_down?(Gosu::KbDown)
       dx -= 1 if Gosu.button_down?(Gosu::KbA) or Gosu.button_down?(Gosu::KbLeft)
       dx += 1 if Gosu.button_down?(Gosu::KbD) or Gosu.button_down?(Gosu::KbRight)
 
-      # Определяем, движется ли игрок
+      # if player move?
       @is_moving = dx != 0 || dy != 0
 
-      # Двигаем игрока, если есть движение
+      # moving
       move(dx, dy) if @is_moving
     end
 
     def animate
-      @frame_delay = 10 # Adjust this value to control animation speed
+      @frame_delay = 10
 
       if @frame_count % @frame_delay == 0
         @current_frame += 1
