@@ -21,14 +21,10 @@ module Game
       @charisma = charisma          #
       @resistance = resistance      #
       @luck = luck                  #
-
-      if RACES.include?(race)
-        @race = race
-      else
-        raise ArgumentError, "Invalid race. Choose from: #{RACES.join(', ')}"
-      end
-      end
+      @race = race                  #
+      
     end
+  
 
     def move(dx, dy)
       @x += dx * @speed
