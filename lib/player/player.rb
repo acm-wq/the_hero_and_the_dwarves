@@ -1,5 +1,6 @@
 require 'gosu'
 require_relative '../game/base_entity'
+require_relative 'weapon'
 
 module Game
   class Player < BaseEntity
@@ -19,14 +20,25 @@ module Game
         Gosu::Image.new('lib/player/sprite/player_run_1.png')
       ]
 
-      @sword_sprite = Gosu::Image.new('lib/player/sprite/sword_iron.png')
+      # Initialize the weapon
+      @weapon = Weapon.new(
+        10, # Damage
+        'lib/player/sprite/sword_iron.png',
+        [ # Attack animation sprites
+          'lib/player/sprite/sword_iron_attack_0.png',
+          'lib/player/sprite/sword_iron_attack_1.png',
+          'lib/player/sprite/sword_iron_attack_2.png',
+          'lib/player/sprite/sword_iron_attack_3.png'
+        ]
+      )
 
       @current_frame = 0
       @idle_animation = true
       @run_animation = false
-
+      @attacking_animation = false
+      @attack_frame = 0
+      @attack_frame_delay = 10
       @frame_count = 0
-      @frame_delay = 10
     end
 
     def update
@@ -35,15 +47,26 @@ module Game
     end
 
     def draw
-      if @idle_animation
-        @idle_sprites[@current_frame].draw(@x, @y, 0)
-      elsif @run_animation
-        @run_sprites[@current_frame].draw(@x, @y, 0)
-      end
+      if @attacking_animation
+        # Draw the player first
+        if @idle_animation
+          @idle_sprites[@current_frame].draw(@x, @y, 0)
+        elsif @run_animation
+          @run_sprites[@current_frame].draw(@x, @y, 0)
+        end
+        # Then draw the current attack frame from the weapon on top
+        @weapon.attack_sprites[@attack_frame].draw(@x, @y, 1)
+      else
+        if @idle_animation
+          @idle_sprites[@current_frame].draw(@x, @y, 0)
+        elsif @run_animation
+          @run_sprites[@current_frame].draw(@x, @y, 0)
+        end
 
-      # Draw the sword next to the player
-      sword_x, sword_y = sword_position
-      @sword_sprite.draw(sword_x, sword_y, 1)  
+        # Draw the weapon sprite
+        sword_x, sword_y = weapon_position
+        @weapon.sprite.draw(sword_x, sword_y, 1)
+      end
     end
 
     private
@@ -60,32 +83,44 @@ module Game
 
       # Check if player is moving
       @is_moving = dx != 0 || dy != 0
-      
+
       # Move the player if they are moving
       move(dx, dy) if @is_moving
 
       # Check if the attack button is pressed (e.g., left mouse button)
-      if Gosu.button_down?(Gosu::MsLeft)
-        attack
-      end
+      return unless Gosu.button_down?(Gosu::MsLeft) && !@attacking_animation
+
+      attack
     end
 
-    def sword_position
-      # Position the sword to the right of the player
-      sword_x = @x + 30  # Adjust the offset as needed
-      sword_y = @y       # Same vertical position as player for now
-      return sword_x, sword_y
+    def weapon_position
+      # Position the weapon to the right of the player
+      sword_x = @x + 30
+      sword_y = @y
+      [sword_x, sword_y]
     end
 
     def animate
-      @frame_delay = 10
+      if @attacking_animation
+        # Handle attack frame animation
+        if @frame_count % @attack_frame_delay == 0
+          @attack_frame += 1
+          if @attack_frame >= @weapon.attack_sprites.size
+            # Reset the attack animation after the last frame
+            @attacking_animation = false
+            @attack_frame = 0
+          end
+        end
+      else
+        @frame_delay = 10
 
-      if @frame_count % @frame_delay == 0
-        @current_frame += 1
-        if @idle_animation
-          @current_frame %= @idle_sprites.size
-        elsif @run_animation
-          @current_frame %= @run_sprites.size
+        if @frame_count % @frame_delay == 0
+          @current_frame += 1
+          if @idle_animation
+            @current_frame %= @idle_sprites.size
+          elsif @run_animation
+            @current_frame %= @run_sprites.size
+          end
         end
       end
 
@@ -93,8 +128,11 @@ module Game
     end
 
     def attack
-      # logic for attacking
-      puts "Player attacks with sword!"
+      # Start the attack animation
+      @attacking_animation = true
+      @attack_frame = 0 # Reset the attack frame to start from the first frame
+      puts "Player attacks with sword! (Damage: #{@weapon.damage})"
+      # Additional logic for attack could go here (e.g., checking for hits)
     end
   end
 end

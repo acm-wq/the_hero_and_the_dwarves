@@ -3,10 +3,11 @@
 
 module Game
   class BaseEntity
-    attr_accessor :x, :y, :speed, :health, :strength, :dexterity, :intelligence, :constitution, :charisma, :resistance, :luck, :race 
+    attr_accessor :x, :y, :speed, :health, :strength, :dexterity, :intelligence, :constitution, :charisma, :resistance,
+                  :luck, :race
 
     # Available races
-    RACES = ['Unknown', 'Human', 'Elf', 'Dwarf', 'Orc']
+    RACES = %w[Unknown Human Elf Dwarf Orc]
 
     def initialize(x = 0, y = 0, speed = 2, health = 100, strength = 0, dexterity = 0, intelligence = 0, constitution = 0,
                    charisma = 0, resistance = 0, luck = 0, race = 'Unknown')
@@ -22,9 +23,7 @@ module Game
       @resistance = resistance      #
       @luck = luck                  #
       @race = race                  #
-      
     end
-  
 
     def move(dx, dy)
       @x += dx * @speed
