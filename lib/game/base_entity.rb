@@ -63,7 +63,7 @@ module Game
         puts "Attacked successfully! Target's health left: #{target.health}"
       end
 
-      puts "The target is defeated!" if target.health <= 0
+      puts 'The target is defeated!' if target.health <= 0
     end
 
     def move_towards(target)

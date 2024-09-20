@@ -16,7 +16,7 @@ module Game
     def update
       return unless @target
 
-      attack(@target)  # Use the attack method from BaseEntity
+      attack(@target) # Use the attack method from BaseEntity
     end
 
     def draw
