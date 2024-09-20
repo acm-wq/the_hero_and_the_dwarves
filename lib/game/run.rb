@@ -86,10 +86,10 @@ module Game
       @player.update
       @gnomes.each(&:update)
 
-       # ...
+      # ...
       @player.attack_nearby_enemies(@gnomes)
 
-       # ...
+      # ...
       @gnomes.reject! { |gnome| gnome.health <= 0 }
     end
 
@@ -135,7 +135,7 @@ module Game
     end
 
     def update
-       # ...
+      # ...
     end
 
     def draw
@@ -146,7 +146,7 @@ module Game
     def button_down(id)
       case id
       when Gosu::KbEscape
-         # ...
+        # ...
         close
         Game::Menu.new.show
       end

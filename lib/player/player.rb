@@ -7,10 +7,10 @@ module Game
     attr_reader :defending_animation
 
     def initialize
-      super(100, 100, 5, 100)  # ...
+      super(100, 100, 5, 100) # ...
       @font = Gosu::Font.new(30)
 
-       # ...
+      # ...
       @idle_sprites = [
         Gosu::Image.new('lib/player/sprite/player_idle_0.png'),
         Gosu::Image.new('lib/player/sprite/player_idle_1.png'),
@@ -30,9 +30,9 @@ module Game
         Gosu::Image.new('lib/player/sprite/player_hit_3.png')
       ]
 
-       # ...
+      # ...
       @weapon = Weapon.new(
-        2,  # ...
+        2, # ...
         'lib/player/sprite/sword_iron.png',
         [  # ...
           'lib/player/sprite/sword_iron_attack_0.png',
@@ -96,18 +96,16 @@ module Game
     end
 
     def attack_nearby_enemies(enemies)
-      return unless @attacking_animation  # ...
+      return unless @attacking_animation # ...
 
       enemies.each do |enemy|
-        if collides_with?(enemy, 50)  # ...
-          enemy.health -= @weapon.damage
-          puts "Hearth enemy: #{enemy.health}"
+        next unless collides_with?(enemy, 50) # ...
 
-          # ...
-          if enemy.health <= 0
-            puts "Enemy death!"
-          end
-        end
+        enemy.health -= @weapon.damage
+        puts "Hearth enemy: #{enemy.health}"
+
+        # ...
+        puts 'Enemy death!' if enemy.health <= 0
       end
     end
 
@@ -121,11 +119,11 @@ module Game
       dy += 1 if Gosu.button_down?(Gosu::KbS) || Gosu.button_down?(Gosu::KbDown)
       dx -= 1 if Gosu.button_down?(Gosu::KbA) || Gosu.button_down?(Gosu::KbLeft)
       dx += 1 if Gosu.button_down?(Gosu::KbD) || Gosu.button_down?(Gosu::KbRight)
-  
+
       @is_moving = dx != 0 || dy != 0
-  
+
       move(dx, dy) if @is_moving
-  
+
       if @is_moving
         @run_animation = true
         @idle_animation = false
@@ -133,36 +131,36 @@ module Game
         @run_animation = false
         @idle_animation = true
       end
-  
+
       if Gosu.button_down?(Gosu::MsLeft) && !@attacking_animation && !@defending_animation
         attack
       elsif Gosu.button_down?(Gosu::MsRight) && !@defending_animation && !@attacking_animation
         defence
       end
     end
-  
+
     def draw_attack
       draw_idle_or_run
-  
+
       return unless @attack_frame < @weapon.attack_sprites.size
-  
+
       @weapon.attack_sprites[@attack_frame].draw(@x, @y, 1)
     end
-  
+
     def draw_defence
       draw_idle_or_run
-  
+
       return unless @defence_frame < @weapon.defence_sprites.size
-  
+
       @weapon.defence_sprites[@defence_frame].draw(@x, @y, 1)
     end
-  
+
     def draw_hit
       return unless @hit_frame < @hit_sprites.size
-  
+
       @hit_sprites[@hit_frame].draw(@x, @y, 0)
     end
-  
+
     def draw_idle_or_run
       if @run_animation && !@run_sprites.empty?
         @run_sprites[@current_frame % @run_sprites.size].draw(@x, @y, 0)
@@ -170,18 +168,18 @@ module Game
         @idle_sprites[@current_frame % @idle_sprites.size].draw(@x, @y, 0)
       end
     end
-  
+
     def draw_weapon
       sword_x, sword_y = weapon_position
       @weapon.sprite.draw(sword_x, sword_y, 1) if @weapon.sprite
     end
-  
+
     def weapon_position
       sword_x = @x + 30
       sword_y = @y + 10
       [sword_x, sword_y]
     end
-  
+
     def animate
       if @attacking_animation
         animate_attack
@@ -194,40 +192,40 @@ module Game
       end
       @frame_count += 1
     end
-  
+
     def animate_attack
       return unless @frame_count % @attack_frame_delay == 0
-  
+
       @attack_frame += 1
       return unless @attack_frame >= @weapon.attack_sprites.size
-  
+
       @attacking_animation = false
       @attack_frame = 0
     end
-  
+
     def animate_defence
       return unless @frame_count % @defence_frame_delay == 0
-  
+
       @defence_frame += 1
       return unless @defence_frame >= @weapon.defence_sprites.size
-  
+
       @defending_animation = false
       @defence_frame = 0
     end
-  
+
     def animate_hit
       return unless @frame_count % @hit_frame_delay == 0
-  
+
       @hit_frame += 1
       return unless @hit_frame >= @hit_sprites.size
-  
+
       @hit_animation = false
       @hit_frame = 0
     end
-  
+
     def animate_idle_or_run
       return unless @frame_count % 10 == 0
-  
+
       if @run_animation
         @current_frame += 1
         @current_frame %= @run_sprites.size
@@ -236,13 +234,13 @@ module Game
         @current_frame %= @idle_sprites.size
       end
     end
-  
+
     def attack
       @attacking_animation = true
       @attack_frame = 0
       puts "Player attack! (Damage: #{@weapon.damage})"
     end
-  
+
     def defence
       @defending_animation = true
       @defence_frame = 0
