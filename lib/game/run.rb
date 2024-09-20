@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require 'gosu'
 require 'json'
-require 'ostruct' 
+require 'ostruct'
 require_relative '../player/player'
 require_relative '../enemy/forest/gnome/gnome'
 require_relative 'base_entity'
@@ -11,7 +9,7 @@ module Game
   # Base options Game
   class BaseWindow < Gosu::Window
     WIDTH = 1280
-    HEIGHT = 720
+    HEIGHT = 640
 
     def initialize
       super WIDTH, HEIGHT
@@ -76,42 +74,48 @@ module Game
       super
       @font = Gosu::Font.new(50)
       @player = Player.new
-      @gnome = Gnome.new(100, 100)
-      @gnome.set_target(@player) 
-  
+      @gnomes = [Gnome.new(200, 200), Gnome.new(400, 400)]
+      @gnomes.each { |gnome| gnome.set_target(@player) }
+
       # Load the map
       @map = load_map('lib/map/forest/forest.json')
-      @tileset = Gosu::Image.load_tiles('lib/map/forest/forest_demo_sprite.png', 128, 128) 
+      @tileset = Gosu::Image.load_tiles('lib/map/forest/forest_demo_sprite.png', 128, 128)
     end
-  
+
     def update
       @player.update
-      @gnome.update
+      @gnomes.each(&:update)
+
+       # ...
+      @player.attack_nearby_enemies(@gnomes)
+
+       # ...
+      @gnomes.reject! { |gnome| gnome.health <= 0 }
     end
-  
+
     def draw
       # Draw the map
       @map.layers.each do |layer|
         layer.data.each_with_index do |tile_id, index|
           next if tile_id == 0 # Skip empty tiles
-  
+
           x = (index % @map.width) * @map.tilewidth
           y = (index / @map.width) * @map.tileheight
-  
+
           @tileset[tile_id - 1].draw(x, y, 0) # Tile IDs start from 1
         end
       end
-  
+
       @player.draw
-      @gnome.draw
+      @gnomes.each(&:draw)
     end
-  
+
     private
-  
+
     def load_map(filename)
       # Load the JSON map data
       map_data = JSON.parse(File.read(filename))
-  
+
       # Create a simple map object (you might want to use a more robust structure)
       OpenStruct.new(
         width: map_data['width'],
@@ -131,18 +135,18 @@ module Game
     end
 
     def update
-      # ...
+       # ...
     end
 
     def draw
-      @font.draw_text('Settings', 100, 100, 0)
-      @font.draw_text('Press ESC to return to menu', 100, 200, 0)
+      @font.draw_text('Settings', 100, 100, 0, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text('Press ESC to return to menu', 100, 200, 0, 1.0, 1.0, Gosu::Color::GRAY)
     end
 
     def button_down(id)
       case id
       when Gosu::KbEscape
-        # Restart in menu
+         # ...
         close
         Game::Menu.new.show
       end
