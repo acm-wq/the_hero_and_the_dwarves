@@ -10,6 +10,7 @@ module Game
       @x = x
       @y = y
       @speed = speed
+      @base_speed = speed
       @health = health
       @damage_player = damage_player
       @strength = strength
@@ -22,12 +23,16 @@ module Game
       @race = race
     end
 
+    def speed_with_dexterity
+      @base_speed + (@dexterity / 10.0)
+    end
+    
     def move(dx, dy)
-      @x += dx * @speed
-      @y += dy * @speed
+      @x += dx * speed_with_dexterity
+      @y += dy * speed_with_dexterity
     end
 
-    def draw
+    def draw  
       # Placeholder for drawing the entity
       # This method should be overridden in subclasses
     end

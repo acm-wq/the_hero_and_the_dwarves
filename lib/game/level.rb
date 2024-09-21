@@ -69,7 +69,7 @@ class Level
 
   def draw_win_message(window)
     font = Gosu::Font.new(100)
-    message = "Win!"
+    message = 'Win!'
     width = font.text_width(message)
     height = font.height
 

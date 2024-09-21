@@ -77,10 +77,8 @@ module Game
 
     def update
       # ...
-      if @level.win
-        return
-      end
-      
+      return if @level.win
+
       @player.update
       @level.update
 
