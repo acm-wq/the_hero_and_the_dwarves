@@ -1,9 +1,11 @@
+# lib/game/run.rb
 require 'gosu'
 require 'json'
 require 'ostruct'
 require_relative '../player/player'
 require_relative '../enemy/forest/gnome/gnome'
 require_relative 'base_entity'
+require_relative 'level'
 
 module Game
   # Base options Game
@@ -27,9 +29,7 @@ module Game
       @background_image = Gosu::Image.new('lib/game/sprite/menu.jpg')
     end
 
-    def update
-      # ...
-    end
+    def update; end
 
     def draw
       @background_image.draw(0, 0, 0)
@@ -49,10 +49,8 @@ module Game
         @current_item = (@current_item + 1) % @menu_items.size
       when Gosu::KbReturn
         case @current_item
-        # Play
         when 0
           start_game
-        # Settings
         when 1
           open_settings
         end
@@ -74,56 +72,24 @@ module Game
       super
       @font = Gosu::Font.new(50)
       @player = Player.new
-      @gnomes = [Gnome.new(200, 200), Gnome.new(400, 400)]
-      @gnomes.each { |gnome| gnome.set_target(@player) }
-
-      # Load the map
-      @map = load_map('lib/map/forest/forest.json')
-      @tileset = Gosu::Image.load_tiles('lib/map/forest/forest_demo_sprite.png', 128, 128)
+      @level = Level.new(@player) 
     end
 
     def update
       @player.update
-      @gnomes.each(&:update)
+      @level.update
 
       # ...
-      @player.attack_nearby_enemies(@gnomes)
+      if @level.all_enemies_defeated?
+        @level = Level.new(@player) 
+      end
 
-      # ...
-      @gnomes.reject! { |gnome| gnome.health <= 0 }
+      @player.attack_nearby_enemies(@level.enemies)
     end
 
     def draw
-      # Draw the map
-      @map.layers.each do |layer|
-        layer.data.each_with_index do |tile_id, index|
-          next if tile_id == 0 # Skip empty tiles
-
-          x = (index % @map.width) * @map.tilewidth
-          y = (index / @map.width) * @map.tileheight
-
-          @tileset[tile_id - 1].draw(x, y, 0) # Tile IDs start from 1
-        end
-      end
-
-      @player.draw
-      @gnomes.each(&:draw)
-    end
-
-    private
-
-    def load_map(filename)
-      # Load the JSON map data
-      map_data = JSON.parse(File.read(filename))
-
-      # Create a simple map object (you might want to use a more robust structure)
-      OpenStruct.new(
-        width: map_data['width'],
-        height: map_data['height'],
-        tilewidth: map_data['tilewidth'],
-        tileheight: map_data['tileheight'],
-        layers: map_data['layers'].map { |layer_data| OpenStruct.new(layer_data) }
-      )
+      @level.draw 
+      @player.draw 
     end
   end
 
@@ -134,9 +100,7 @@ module Game
       @font = Gosu::Font.new(50)
     end
 
-    def update
-      # ...
-    end
+    def update; end
 
     def draw
       @font.draw_text('Settings', 100, 100, 0, 1.0, 1.0, Gosu::Color::WHITE)
@@ -146,7 +110,6 @@ module Game
     def button_down(id)
       case id
       when Gosu::KbEscape
-        # ...
         close
         Game::Menu.new.show
       end

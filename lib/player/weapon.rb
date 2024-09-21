@@ -2,7 +2,7 @@ module Game
   class Weapon
     attr_reader :damage, :sprite, :attack_sprites, :defence_sprites
 
-    def initialize(damage, sprite_path, attack_sprites_paths, defence_sprites_paths)
+    def initialize(damage = 2, sprite_path, attack_sprites_paths, defence_sprites_paths)
       @damage = damage
       load_sprites(sprite_path, attack_sprites_paths, defence_sprites_paths)
       @attack_frame = 0
