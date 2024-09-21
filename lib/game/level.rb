@@ -4,11 +4,12 @@ require 'ostruct'
 require_relative '../enemy/forest/gnome/gnome'
 
 class Level
-  attr_reader :enemies
+  attr_reader :enemies, :win
 
   def initialize(player)
     @player = player
     @enemies = []
+    @win = false # ...
     load_level_data
     load_map('lib/map/forest/forest.json')
   end
@@ -21,10 +22,7 @@ class Level
   end
 
   def load_map(filename)
-    # ...
     map_data = JSON.parse(File.read(filename))
-
-    # ...
     @map = OpenStruct.new(
       width: map_data['width'],
       height: map_data['height'],
@@ -36,16 +34,20 @@ class Level
   end
 
   def update
+    return if @win # ...
+
     @enemies.each(&:update)
-    # ...
     @enemies.reject! { |gnome| gnome.health <= 0 }
+
+    # ...
+    @win = true if all_enemies_defeated?
   end
 
   def all_enemies_defeated?
     @enemies.empty?
   end
 
-  def draw
+  def draw(window)
     # ...
     @map.layers.each do |layer|
       layer.data.each_with_index do |tile_id, index|
@@ -54,11 +56,29 @@ class Level
         x = (index % @map.width) * @map.tilewidth
         y = (index / @map.width) * @map.tileheight
 
-        @tileset[tile_id - 1].draw(x, y, 0) 
+        @tileset[tile_id - 1].draw(x, y, 0)
       end
     end
 
     # ...
     @enemies.each(&:draw)
+
+    # ...
+    draw_win_message(window) if @win
+  end
+
+  def draw_win_message(window)
+    font = Gosu::Font.new(100)
+    message = "Win!"
+    width = font.text_width(message)
+    height = font.height
+
+    # ...
+    font.draw_text(message, (window.width - width) / 2, (window.height - height) / 2, 0, 1.0, 1.0, Gosu::Color::GREEN)
+  end
+
+  def reset_level
+    @win = false
+    load_level_data # ...
   end
 end
