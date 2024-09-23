@@ -1,12 +1,10 @@
 module Game
   class BaseEntity
-    attr_accessor :x, :y, :speed, :health, :strength, :dexterity, :intelligence, :constitution, :charisma, :resistance,
-                  :luck, :race, :damage_player
+    attr_accessor :x, :y, :speed, :health, :strength, :dexterity, :intelligence, :charisma, :resistance,
+                  :luck, :damage_player
 
-    RACES = %w[Unknown Human Elf Dwarf Orc]
-
-    def initialize(x = 0, y = 0, speed = 2, health = 100, damage_player = 0, strength = 0, dexterity = 0, intelligence = 0, constitution = 0,
-                   charisma = 0, resistance = 0, luck = 0, race = 'Unknown')
+    def initialize(x = 0, y = 0, speed = 1, health = 10, damage_player = 0, strength = 1, dexterity = 1, intelligence = 1,
+                   charisma = 0, sword_skill = 0, bow_skill = 0, magic_skill = 0, resistance = 1, luck = 3)
       @x = x
       @y = y
       @speed = speed
@@ -16,11 +14,12 @@ module Game
       @strength = strength
       @dexterity = dexterity
       @intelligence = intelligence
-      @constitution = constitution
       @charisma = charisma
+      @sword_skill = sword_skill
+      @bow_skill = bow_skill
+      @magic_skill = magic skill
       @resistance = resistance
       @luck = luck
-      @race = race
     end
 
     def speed_with_dexterity
