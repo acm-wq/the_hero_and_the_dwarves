@@ -71,36 +71,37 @@ module Game
     def initialize
       super
       @font = Gosu::Font.new(50)
-      @player = Player.new
-      @level = Level.new(@player) # ...
+      @player = Game::Player.new
+      @level = Level.new(@player)
     end
-
+  
     def update
-      # ...
-      return if @level.win
-
+      return if @level.win 
+  
       @player.update
       @level.update
-
-      # ...
+  
       if @level.all_enemies_defeated?
-        # ...
+        @level.win = true 
       end
-
-      # ...
+  
       @player.attack_nearby_enemies(@level.enemies)
     end
-
+  
     def draw
-      @level.draw(self) # ...
-      @player.draw # ...
+      @level.draw(self)
+      @player.draw
     end
-
+  
     def button_down(id)
-      case id
-      when Gosu::KbReturn
-        if @level.win
-          @level.reset_level # ...
+      if @level.win
+        @level.button_down(id) 
+      else
+        case id
+        when Gosu::KbReturn
+          if @level.win
+            @level.reset_level 
+          end
         end
       end
     end

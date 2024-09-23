@@ -5,17 +5,19 @@ require_relative '../enemy/forest/gnome/gnome'
 
 class Level
   attr_reader :enemies, :win
+  attr_writer :win 
 
   def initialize(player)
     @player = player
     @enemies = []
-    @win = false # ...
+    @win = false
+    @selected_attribute = nil
+    @attributes = [:strength, :dexterity, :intelligence]
     load_level_data
     load_map('lib/map/forest/forest.json')
   end
 
   def load_level_data
-    # ...
     @enemies << Game::Gnome.new(200, 200)
     @enemies << Game::Gnome.new(400, 400)
     @enemies.each { |gnome| gnome.set_target(@player) }
@@ -39,7 +41,6 @@ class Level
     @enemies.each(&:update)
     @enemies.reject! { |gnome| gnome.health <= 0 }
 
-    # ...
     @win = true if all_enemies_defeated?
   end
 
@@ -48,10 +49,23 @@ class Level
   end
 
   def draw(window)
-    # ...
+    draw_map
+    @enemies.each(&:draw)
+
+    if @win
+      if @selected_attribute.nil?
+        draw_win_message(window)
+        draw_attribute_selection(window)
+      else
+        apply_attribute_selection
+      end
+    end
+  end
+
+  def draw_map
     @map.layers.each do |layer|
       layer.data.each_with_index do |tile_id, index|
-        next if tile_id == 0 # ...
+        next if tile_id == 0
 
         x = (index % @map.width) * @map.tilewidth
         y = (index / @map.width) * @map.tileheight
@@ -59,12 +73,6 @@ class Level
         @tileset[tile_id - 1].draw(x, y, 0)
       end
     end
-
-    # ...
-    @enemies.each(&:draw)
-
-    # ...
-    draw_win_message(window) if @win
   end
 
   def draw_win_message(window)
@@ -72,13 +80,55 @@ class Level
     message = 'Win!'
     width = font.text_width(message)
     height = font.height
-
-    # ...
     font.draw_text(message, (window.width - width) / 2, (window.height - height) / 2, 0, 1.0, 1.0, Gosu::Color::GREEN)
+  end
+
+  def draw_attribute_selection(window)
+    font = Gosu::Font.new(30)
+    y_offset = 200
+    @attributes.each_with_index do |attribute, index|
+      message = "Press #{index + 1} to increase #{attribute.to_s.capitalize}"
+      font.draw_text(message, 100, y_offset + index * 40, 0, 1.0, 1.0, Gosu::Color::WHITE)
+    end
+  end
+
+  def apply_attribute_selection
+    case @selected_attribute
+    when :strength
+      @player.strength += 1
+    when :dexterity
+      @player.dexterity += 1
+    when :intelligence
+      @player.intelligence += 1
+    end
+    reset_level
   end
 
   def reset_level
     @win = false
-    load_level_data # ...
+    @selected_attribute = nil
+    load_level_data 
+  end
+
+  def select_attribute(index)
+    if index.between?(1, @attributes.length)
+      @selected_attribute = @attributes[index - 1]
+    end
+  end
+
+  def button_down(id)
+    if @win && @selected_attribute.nil?
+      case id
+      when Gosu::Kb1
+        puts "Strength selected"
+        select_attribute(1)
+      when Gosu::Kb2
+        puts "Dexterity selected"
+        select_attribute(2)
+      when Gosu::Kb3
+        puts "Intelligence selected"
+        select_attribute(3)
+      end
+    end
   end
 end

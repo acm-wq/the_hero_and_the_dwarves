@@ -73,6 +73,7 @@ module Game
         @previous_health = @health
       end
 
+      puts @strength
       puts "Здоровье игрока: #{@health}" if @health <= 50
     end
 
