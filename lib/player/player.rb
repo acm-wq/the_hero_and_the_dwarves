@@ -73,8 +73,7 @@ module Game
         @previous_health = @health
       end
 
-      puts @strength
-      puts "Здоровье игрока: #{@health}" if @health <= 50
+      puts "HP Player: #{@health}" if @health <= 50
     end
 
     def draw
