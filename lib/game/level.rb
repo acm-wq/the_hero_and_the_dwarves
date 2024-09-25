@@ -41,7 +41,7 @@ class Level
     return if @win # ...
 
     @enemies.each(&:update)
-    @enemies.reject! { |gnome| gnome.health <= 0 }
+    @enemies.reject! { |gnome| gnome.health <= 0 && gnome.is_dead }
 
     @win = true if all_enemies_defeated?
   end
