@@ -6,8 +6,10 @@ module Game
     ANIMATION_SPEED = 0.1
     SPRITE_COUNT = 4
 
-    def initialize(x = 0, y = 0, speed = 1, health = 50, damage_player = 1)
+    def initialize(x = 0, y = 0, speed = 1, health = 50, damage_player = 1, _strength = 1, _dexterity = 1, _intelligence = 1,
+                   _charisma = 0, _sword_skill = 0, _bow_skill = 0, _magic_skill = 0, _resistance = 1000, _luck = 3)
       super(x, y, speed, health, damage_player)
+      @resistance = 10
       @target = nil
 
       @sprites = []

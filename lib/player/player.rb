@@ -112,8 +112,10 @@ module Game
       enemies.each do |enemy|
         next unless collides_with?(enemy, 50) # ...
 
-        enemy.health -= @weapon.damage
-        puts "Hearth enemy: #{enemy.health}"
+        damage = @weapon.damage
+        apply_damage_with_resistance(enemy, damage)
+
+        puts "Health enemy: #{enemy.health}"
 
         # ...
         puts 'Enemy death!' if enemy.health <= 0

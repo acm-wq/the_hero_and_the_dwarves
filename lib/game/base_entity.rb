@@ -71,10 +71,10 @@ module Game
     end
 
     def apply_damage_with_resistance(target, damage)
-      damage_reduction_percent = [target.resistance * 2, 100].min # Cap at 100%
+      damage_reduction_percent = [target.resistance * 2, 100].min
       damage_after_resistance = damage * (1 - damage_reduction_percent / 100.0)
       target.health -= damage_after_resistance
-      target.health = 0 if target.health < 0.01 # Set health to 0 if it's below the tolerance
+      target.health = 0 if target.health < 0.01
     end
 
     def move_towards(target)
