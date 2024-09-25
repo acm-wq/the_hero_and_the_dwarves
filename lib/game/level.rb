@@ -14,6 +14,9 @@ class Level
     @attributes = %i[strength dexterity intelligence]
     load_level_data
     load_map('lib/map/forest/forest.json')
+
+    @music = Gosu::Song.new('lib/sound/forest/Bhisar_Forest.wav')
+    @music.play(true)
   end
 
   def load_level_data
