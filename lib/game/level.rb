@@ -3,15 +3,15 @@ require 'ostruct'
 require_relative '../enemy/forest/gnome/gnome'
 
 class Level
-  attr_reader :enemies, :win
-  attr_writer :win 
+  attr_accessor :win
+  attr_reader :enemies
 
   def initialize(player)
     @player = player
     @enemies = []
     @win = false
     @selected_attribute = nil
-    @attributes = [:strength, :dexterity, :intelligence]
+    @attributes = %i[strength dexterity intelligence]
     load_level_data
     load_map('lib/map/forest/forest.json')
   end
@@ -51,13 +51,13 @@ class Level
     draw_map
     @enemies.each(&:draw)
 
-    if @win
-      if @selected_attribute.nil?
-        draw_win_message(window)
-        draw_attribute_selection(window)
-      else
-        apply_attribute_selection
-      end
+    return unless @win
+
+    if @selected_attribute.nil?
+      draw_win_message(window)
+      draw_attribute_selection(window)
+    else
+      apply_attribute_selection
     end
   end
 
@@ -82,7 +82,7 @@ class Level
     font.draw_text(message, (window.width - width) / 2, (window.height - height) / 2, 0, 1.0, 1.0, Gosu::Color::GREEN)
   end
 
-  def draw_attribute_selection(window)
+  def draw_attribute_selection(_window)
     font = Gosu::Font.new(30)
     y_offset = 200
     @attributes.each_with_index do |attribute, index|
@@ -106,28 +106,28 @@ class Level
   def reset_level
     @win = false
     @selected_attribute = nil
-    load_level_data 
+    load_level_data
   end
 
   def select_attribute(index)
-    if index.between?(1, @attributes.length)
-      @selected_attribute = @attributes[index - 1]
-    end
+    return unless index.between?(1, @attributes.length)
+
+    @selected_attribute = @attributes[index - 1]
   end
 
   def button_down(id)
-    if @win && @selected_attribute.nil?
-      case id
-      when Gosu::Kb1
-        puts "Strength selected"
-        select_attribute(1)
-      when Gosu::Kb2
-        puts "Dexterity selected"
-        select_attribute(2)
-      when Gosu::Kb3
-        puts "Intelligence selected"
-        select_attribute(3)
-      end
+    return unless @win && @selected_attribute.nil?
+
+    case id
+    when Gosu::Kb1
+      puts 'Strength selected'
+      select_attribute(1)
+    when Gosu::Kb2
+      puts 'Dexterity selected'
+      select_attribute(2)
+    when Gosu::Kb3
+      puts 'Intelligence selected'
+      select_attribute(3)
     end
   end
 end

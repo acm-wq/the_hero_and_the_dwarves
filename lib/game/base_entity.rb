@@ -25,13 +25,13 @@ module Game
     def speed_with_dexterity
       @base_speed + (@dexterity / 10.0)
     end
-    
+
     def move(dx, dy)
       @x += dx * speed_with_dexterity
       @y += dy * speed_with_dexterity
     end
 
-    def draw  
+    def draw
       # Placeholder for drawing the entity
       # This method should be overridden in subclasses
     end
@@ -60,7 +60,7 @@ module Game
     def deal_damage_to(target)
       if target.defending_animation
         reduced_damage = @damage_player / 2
-        apply_damage_with_resistance(target, reduced_damage) 
+        apply_damage_with_resistance(target, reduced_damage)
         puts "The attack was defended! Damage reduced to #{reduced_damage}. Target's health: #{target.health}"
       else
         apply_damage_with_resistance(target, @damage_player)
@@ -72,7 +72,7 @@ module Game
 
     def apply_damage_with_resistance(target, damage)
       damage_reduction_percent = [target.resistance * 2, 100].min # Cap at 100%
-      damage_after_resistance = damage * (1 - damage_reduction_percent / 100.0) 
+      damage_after_resistance = damage * (1 - damage_reduction_percent / 100.0)
       target.health -= damage_after_resistance
       target.health = 0 if target.health < 0.01 # Set health to 0 if it's below the tolerance
     end
