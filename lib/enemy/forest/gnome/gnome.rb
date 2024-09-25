@@ -10,7 +10,7 @@ module Game
     def initialize(x = 0, y = 0, speed = 1, health = 50, damage_player = 1, _strength = 1, _dexterity = 1, _intelligence = 1,
                    _charisma = 0, _sword_skill = 0, _bow_skill = 0, _magic_skill = 0, _resistance = 1000, _luck = 3)
       super(x, y, speed, health, damage_player)
-      @resistance = 10
+      @resistance = 0
       @target = nil
 
       @sprites = []
@@ -28,6 +28,7 @@ module Game
       @hit_animation_frame = 0
       @hit_animation_time = 0
       @previous_health = health
+      @hit_animation = false
     end
 
     def set_target(target)
@@ -38,12 +39,17 @@ module Game
       return unless @target
 
       if @health < @previous_health
+        @hit_animation = true
+        @previous_health = @health
+      end
+
+      if @hit_animation
         @hit_animation_time += ANIMATION_SPEED
         if @hit_animation_time >= 1
           @hit_animation_frame = (@hit_animation_frame + 1) % HIT_SPRITE_COUNT
           @hit_animation_time = 0
+          @hit_animation = false if @hit_animation_frame == 0
         end
-        @previous_health = @health
       elsif collides_with?(@target)
         attack(@target)
         @current_sprite_index = 0
@@ -59,7 +65,7 @@ module Game
     end
 
     def draw
-      if @health < @previous_health
+      if @hit_animation
         @hit_sprites[@hit_animation_frame].draw(@x, @y, 1)
       else
         @sprites[@current_sprite_index].draw(@x, @y, 1)
