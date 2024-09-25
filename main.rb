@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require_relative 'lib/game/run'
 
-puts 'hello world'
+puts 'Hello World!'
 
 # Start game
 Game::Menu.new.show

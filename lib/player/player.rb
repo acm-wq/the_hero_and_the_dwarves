@@ -8,7 +8,7 @@ module Game
 
     def initialize
       super(x = 100, y = 100, speed = 3, health =  100, damage_player = 0, strength = 0, dexterity = 0,
-        intelligence = 0, charisma = 0, sword_skill = 0, bow_skill = 0, magic_skill = 0, resistance = 0, luck = 0) # ...
+        intelligence = 0, charisma = 0, sword_skill = 0, bow_skill = 0, magic_skill = 0, resistance = 40, luck = 0) # ...
       @font = Gosu::Font.new(30)
 
       # ...
@@ -93,16 +93,16 @@ module Game
     end
 
     def draw_health
-      @font.draw_text("HP: #{@health}", 10, 10, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Speed: #{@speed}", 10, 40, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Strength: #{@strength}", 10, 70, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Dexterity: #{@dexterity}", 10, 100, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Intelligence: #{@intelligence}", 10, 130, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Charisma: #{@charisma}", 10, 160, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Sword Skill: #{@sword_skill}", 10, 190, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Bow Skill: #{@bow_skill}", 10, 220, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Magic Skill: #{@magic_skill}", 10, 250, 2, 1.0, 1.0, Gosu::Color::WHITE)
-      @font.draw_text("Luck: #{@luck}", 10, 280, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("HP: #{@health.to_i}", 10, 10, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Speed: #{@speed.to_i}", 10, 40, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Strength: #{@strength.to_i}", 10, 70, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Dexterity: #{@dexterity.to_i}", 10, 100, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Intelligence: #{@intelligence.to_i}", 10, 130, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Charisma: #{@charisma.to_i}", 10, 160, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Sword Skill: #{@sword_skill.to_i}", 10, 190, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Bow Skill: #{@bow_skill.to_i}", 10, 220, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Magic Skill: #{@magic_skill.to_i}", 10, 250, 2, 1.0, 1.0, Gosu::Color::WHITE)
+      @font.draw_text("Luck: #{@luck.to_i}", 10, 280, 2, 1.0, 1.0, Gosu::Color::WHITE)
     end
 
     def attack_nearby_enemies(enemies)

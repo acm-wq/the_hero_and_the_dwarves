@@ -32,8 +32,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  gosu
-  rubocop
+  gosu (~> 1.4, >= 1.4.6)
+  rubocop (~> 1.66, >= 1.66.1)
 
 BUNDLED WITH
    2.5.18

@@ -1,4 +1,3 @@
-# lib/game/run.rb
 require 'gosu'
 require 'json'
 require 'ostruct'

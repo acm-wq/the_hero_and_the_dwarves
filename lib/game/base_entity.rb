@@ -60,14 +60,21 @@ module Game
     def deal_damage_to(target)
       if target.defending_animation
         reduced_damage = @damage_player / 2
-        target.health -= reduced_damage
+        apply_damage_with_resistance(target, reduced_damage) 
         puts "The attack was defended! Damage reduced to #{reduced_damage}. Target's health: #{target.health}"
       else
-        target.health -= @damage_player
+        apply_damage_with_resistance(target, @damage_player)
         puts "Attacked successfully! Target's health left: #{target.health}"
       end
 
       puts 'The target is defeated!' if target.health <= 0
+    end
+
+    def apply_damage_with_resistance(target, damage)
+      damage_reduction_percent = [target.resistance * 2, 100].min # Cap at 100%
+      damage_after_resistance = damage * (1 - damage_reduction_percent / 100.0) 
+      target.health -= damage_after_resistance
+      target.health = 0 if target.health < 0.01 # Set health to 0 if it's below the tolerance
     end
 
     def move_towards(target)

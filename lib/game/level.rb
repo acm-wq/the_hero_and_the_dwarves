@@ -1,4 +1,3 @@
-# lib/game/level/prolog/level.rb
 require 'json'
 require 'ostruct'
 require_relative '../enemy/forest/gnome/gnome'
