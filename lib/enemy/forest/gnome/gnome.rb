@@ -1,14 +1,14 @@
 module Game
   class Gnome < BaseEntity
     attr_accessor :target
-    attr_reader :image
+    attr_reader :image, :is_dead
 
     ANIMATION_SPEED = 0.1
     SPRITE_COUNT = 4
     HIT_SPRITE_COUNT = 4
     DEATH_SPRITE_COUNT = 4
 
-    def initialize(x = 0, y = 0, speed = 1, health = 300, damage_player = 1, _strength = 1, _dexterity = 1, _intelligence = 1,
+    def initialize(x = 0, y = 0, speed = 1, health = 50, damage_player = 1, _strength = 1, _dexterity = 1, _intelligence = 1,
                    _charisma = 0, _sword_skill = 0, _bow_skill = 0, _magic_skill = 0, _resistance = 1000, _luck = 3)
       super(x, y, speed, health, damage_player)
       @resistance = 0
@@ -95,10 +95,6 @@ module Game
       else
         @sprites[@current_sprite_index].draw(@x, @y, 1)
       end
-    end
-
-    def is_dead
-      @is_dead
     end
   end
 end

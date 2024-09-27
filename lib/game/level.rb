@@ -12,6 +12,7 @@ class Level
     @win = false
     @selected_attribute = nil
     @attributes = %i[strength dexterity intelligence]
+    @generated_attributes = []
     load_level_data
     load_map('lib/map/forest/forest.json')
 
@@ -86,11 +87,13 @@ class Level
   end
 
   def draw_attribute_selection(_window)
-    font = Gosu::Font.new(30)
+    generate_attributes if @generated_attributes.empty?
+
+    font = Gosu::Font.new(50)
     y_offset = 200
-    @attributes.each_with_index do |attribute, index|
+    @generated_attributes.each_with_index do |attribute, index|
       message = "Press #{index + 1} to increase #{attribute.to_s.capitalize}"
-      font.draw_text(message, 100, y_offset + index * 40, 0, 1.0, 1.0, Gosu::Color::WHITE)
+      font.draw_text(message, 100, y_offset + index * 80, 0, 1.0, 1.0, Gosu::Color::WHITE)
     end
   end
 
@@ -102,6 +105,18 @@ class Level
       @player.dexterity += 1
     when :intelligence
       @player.intelligence += 1
+    when :charisma
+      @player.charisma += 1
+    when :sword_skill
+      @player.sword_skill += 1
+    when :bow_skill
+      @player.bow_skill += 1
+    when :magic_skill
+      @player.magic_skill += 1
+    when :resistance
+      @player.resistance += 1
+    when :luck
+      @player.luck += 1
     end
     reset_level
   end
@@ -109,13 +124,14 @@ class Level
   def reset_level
     @win = false
     @selected_attribute = nil
+    @generated_attributes = []
     load_level_data
   end
 
   def select_attribute(index)
-    return unless index.between?(1, @attributes.length)
+    return unless index.between?(1, @generated_attributes.length)
 
-    @selected_attribute = @attributes[index - 1]
+    @selected_attribute = @generated_attributes[index - 1]
   end
 
   def button_down(id)
@@ -132,5 +148,15 @@ class Level
       puts 'Intelligence selected'
       select_attribute(3)
     end
+  end
+
+  def generate_attributes
+    @generated_attributes = []
+    @generated_attributes << %i[strength dexterity intelligence].sample(2)
+
+    non_standard_attributes = %i[charisma sword_skill bow_skill magic_skill luck] - @generated_attributes
+    @generated_attributes << non_standard_attributes.sample(1)
+
+    @generated_attributes.flatten!
   end
 end
