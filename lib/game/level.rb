@@ -1,6 +1,7 @@
 require 'json'
 require 'ostruct'
 require_relative '../enemy/forest/gnome/gnome'
+require_relative '../enemy/forest/boar/boar'
 
 class Level
   attr_accessor :win

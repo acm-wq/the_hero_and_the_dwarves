@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "forest.json",
+    "activeFile": "",
     "expandedProjectPaths": [
         "."
     ],
@@ -17,29 +17,37 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 863,
-                "y": 493
+                "x": 619,
+                "y": 65
             }
+        },
+        "forest.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "forest_decor.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "last.imagePath": "/home/cami/nordscript/more_dungeons_please/lib/map/forest",
-    "map.height": 5,
+    "map.height": 45,
     "map.lastUsedFormat": "json",
-    "map.tileHeight": 128,
-    "map.tileWidth": 128,
-    "map.width": 10,
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 80,
     "openFiles": [
-        "fores.tsx",
-        "forest.json"
     ],
     "project": "forest_map.tiled-project",
     "recentFiles": [
         "fores.tsx",
-        "forest.json"
+        "forest_decor.tsx",
+        "forest.json",
+        "forest.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 128,
-        "width": 128
+        "height": 16,
+        "width": 16
     }
 }
