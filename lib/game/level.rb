@@ -22,9 +22,16 @@ class Level
   end
 
   def load_level_data
+    # Добавляем гномов
     @enemies << Game::Gnome.new(200, 200)
     @enemies << Game::Gnome.new(400, 400)
-    @enemies.each { |gnome| gnome.set_target(@player) }
+
+    # Добавляем кабанчиков
+    @enemies << Game::Boar.new(300, 300)
+    @enemies << Game::Boar.new(500, 500)
+
+    # Устанавливаем цель для всех врагов
+    @enemies.each { |enemy| enemy.set_target(@player) }
   end
 
   def load_map(filename)
@@ -43,7 +50,7 @@ class Level
     return if @win # ...
 
     @enemies.each(&:update)
-    @enemies.reject! { |gnome| gnome.health <= 0 && gnome.is_dead }
+    @enemies.reject! { |enemy| enemy.health <= 0 && enemy.is_dead }
 
     @win = true if all_enemies_defeated?
   end

@@ -16,7 +16,7 @@ module Game
 
       @sprites = []
       SPRITE_COUNT.times do |i|
-        @sprites << Gosu::Image.new("lib/enemy/forest/gnome/sprite/gnome_run_#{i}.png")
+        @sprites << Gosu::Image.new("lib/enemy/forest/boar/sprite/gnome_run_#{i}.png")
       end
 
       @hit_sprites = []
