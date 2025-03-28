@@ -1,12 +1,19 @@
 -- -- 
-## Hi! What's that?
+## 🚧 This vault was abandoned! 🚧
 -- --
 
-MDP is a 2d roguelike made in ruby. All my life I thought that there are too few games with pure dungeons in the world, so I decided to make my own.
+Hi, this mini-game was created in Ruby as part of my test case for choosing the best library to develop my dream game. It was originally intended to be a large open-source project where everyone could contribute, but later, I stepped away from game development for a while. Now, I’m busy with other projects, but you can follow the latest updates here - 👉 ...
 
-What's in development
+Feel free to modify and use this project however you like!
 
+--
+## Get started
 
+```bash
+# ruby 3.3.2
+bundle install
+ruby main.rb 
+```
 -- --
 ## 💝 Thanks to
 
